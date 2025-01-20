@@ -62,24 +62,22 @@ class MambaCacheManager:
             batch_size = input_ids.size(0)
             num_indices = len(state_indices)
             
-            print(f"[DEBUG] Initial state indices: {state_indices}")
-            print(f"[DEBUG] Initial num_indices: {num_indices}")
-            print(f"[DEBUG] Batch size: {batch_size}")
-            print(f"[DEBUG] Current divisibility: {batch_size} % {num_indices} = {batch_size % num_indices}")
+            # print(f"[DEBUG] Initial state indices: {state_indices}")
+            # print(f"[DEBUG] Initial num_indices: {num_indices}")
+            # print(f"[DEBUG] Batch size: {batch_size}")
+            # print(f"[DEBUG] Current divisibility: {batch_size} % {num_indices} = {batch_size % num_indices}")
 
             if num_indices > 0:
-                # Calculate how many times we need to reduce the state indices
-                # to make batch_size evenly divisible by num_indices
                 original_indices = num_indices
                 while num_indices > 0 and (batch_size % num_indices) != 0:
                     num_indices -= 1
                     state_indices.pop()  # Remove last index
-                    print(f"[DEBUG] Reducing indices - Current size: {num_indices}, "
-                        f"Divisibility check: {batch_size} % {num_indices} = {batch_size % num_indices}")
+                    # print(f"[DEBUG] Reducing indices - Current size: {num_indices}, "
+                    #     f"Divisibility check: {batch_size} % {num_indices} = {batch_size % num_indices}")
 
-                if original_indices != num_indices:
-                    print(f"[DEBUG] Reduced state indices from {original_indices} to {num_indices}")
-                    print(f"[DEBUG] Final state indices: {state_indices}")
+                # if original_indices != num_indices:
+                    # print(f"[debug] reduced state indices from {original_indices} to {num_indices}")
+                    # print(f"[debug] final state indices: {state_indices}")
             # --- Mohit's Fix End ---
 
             state_indices_tensor = torch.as_tensor(state_indices,

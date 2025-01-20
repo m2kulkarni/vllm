@@ -216,7 +216,6 @@ def get_config(
             )
         else:
             try:
-                print(model)
                 config = AutoConfig.from_pretrained(
                     model,
                     trust_remote_code=trust_remote_code,
