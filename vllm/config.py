@@ -2217,7 +2217,7 @@ def _get_and_verify_dtype(
     # because config.torch_dtype can be None.
     config_dtype = getattr(config, "torch_dtype", None)
     if config_dtype is None:
-        config_dtype = torch.float32
+        config_dtype = torch.bfloat16
 
     if isinstance(dtype, str):
         dtype = dtype.lower()

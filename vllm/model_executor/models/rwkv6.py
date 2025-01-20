@@ -249,6 +249,10 @@ class RWKV6Attention(nn.Module):
         input_shift_state = input_shift_state.to(
             torch.bfloat16)[kv_cache.state_indices_tensor, 0]
 
+        assert bsz % kv_cache.state_indices_tensor.size(0) == 0, (
+            f"Batch size {bsz} is not divisible by the number of "
+            f"state indices {kv_cache.state_indices_tensor.size(0)}")
+
         qlen = bsz // kv_cache.state_indices_tensor.size(0)
         bsz = kv_cache.state_indices_tensor.size(0)
         x = hidden_states.view(bsz, qlen, -1)
@@ -317,6 +321,36 @@ class RWKV6DecoderLayer(nn.Module):
         input_ids: Optional[torch.Tensor] = None,
         **kwargs,
     ):
+        print(f"hidden_states: {hidden_states.size()}")
+        print(f"positions: {positions.size()}")
+        print(f"input_ids: {input_ids.size()}")
+        print(f"rwkv6_cache_params.state_indices_tensor: {rwkv6_cache_params.state_indices_tensor.size()}")
+#        # 1) Force hidden_states & positions to have the same length
+#        batch_h = hidden_states.size(0)
+#        batch_p = positions.size(0)
+#        min_bsz = min(batch_h, batch_p)
+#
+#        # If positions or hidden_states is longer, slice off the extra rows
+#        if batch_h != batch_p:
+#            hidden_states = hidden_states[:min_bsz]
+#            positions = positions[:min_bsz]
+#            if input_ids is not None:
+#                # also ensure input_ids is not longer than min_bsz
+#                if input_ids.size(0) > min_bsz:
+#                    input_ids = input_ids[:min_bsz]
+#
+#        bsz = min_bsz
+#        num_requests = rwkv6_cache_params.state_indices_tensor.size(0)
+#
+#        # 2) Drop leftover if bsz is not evenly divisible by num_requests
+#        leftover = bsz % num_requests
+#        if leftover != 0:
+#            hidden_states = hidden_states[:-leftover]
+#            positions = positions[:-leftover]
+#            if input_ids is not None:
+#                input_ids = input_ids[:-leftover]
+#            bsz -= leftover
+            
         # Self Attention
         hidden_states = self.pre_ln(
             hidden_states) if self.pre_ln else hidden_states
