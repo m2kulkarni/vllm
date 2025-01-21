@@ -112,7 +112,7 @@ _TEXT_GENERATION_EXAMPLE_MODELS = {
     "Qwen2ForCausalLM": _HfExamplesInfo("Qwen/Qwen2-7B-Instruct"),
     "Qwen2MoeForCausalLM": _HfExamplesInfo("Qwen/Qwen1.5-MoE-A2.7B-Chat"),
     "Rwkv6ForCausalLM": _HfExamplesInfo("RWKV/v6-Finch-7B-World3-HF", trust_remote_code=True), # noqa: E501
-
+    "GLAForCausalLM": _HfExamplesInfo("fla-hub/gla-2.7B-100B"),
     "RWForCausalLM": _HfExamplesInfo("tiiuae/falcon-40b",
                                      is_available_online=False),
     "StableLMEpochForCausalLM": _HfExamplesInfo("stabilityai/stablelm-zephyr-3b",  # noqa: E501
